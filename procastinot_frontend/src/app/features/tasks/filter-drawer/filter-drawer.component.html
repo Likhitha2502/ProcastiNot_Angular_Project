@@ -1,0 +1,71 @@
+<div class="drawer-header">
+  <h2>Filter Tasks</h2>
+  <div class="header-actions">
+    @if (hasActiveFilters) {
+      <button mat-button class="reset-btn" (click)="handleReset()">Reset Filters</button>
+    }
+    <button mat-icon-button (click)="handleClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<p class="section-label">Status</p>
+<div class="checkbox-group">
+  @for (status of statuses; track status) {
+    <label class="checkbox-row">
+      <mat-checkbox
+        [checked]="draft.status.includes(status)"
+        (change)="toggleStatus(status)"
+      ></mat-checkbox>
+      <span class="chip">{{ status }}</span>
+    </label>
+  }
+</div>
+
+<div class="divider"></div>
+
+<p class="section-label">Priority</p>
+<div class="checkbox-group">
+  @for (priority of priorities; track priority) {
+    <label class="checkbox-row">
+      <mat-checkbox
+        [checked]="draft.priority.includes(priority)"
+        (change)="togglePriority(priority)"
+      ></mat-checkbox>
+      <span class="chip">{{ priority }}</span>
+    </label>
+  }
+</div>
+
+<div class="divider"></div>
+
+<p class="section-label">Due Date Range</p>
+<div class="date-range">
+  <div>
+    <p class="date-label">From</p>
+    <mat-form-field appearance="outline" class="text-field">
+      <input
+        matInput
+        type="date"
+        [value]="draft.dueDateFrom ?? ''"
+        (change)="setDueDateFrom($any($event.target).value)"
+      />
+    </mat-form-field>
+  </div>
+  <div>
+    <p class="date-label">To</p>
+    <mat-form-field appearance="outline" class="text-field">
+      <input
+        matInput
+        type="date"
+        [value]="draft.dueDateTo ?? ''"
+        (change)="setDueDateTo($any($event.target).value)"
+      />
+    </mat-form-field>
+  </div>
+</div>
+
+<button mat-flat-button color="primary" class="apply-btn" [disabled]="!draftIsDirty" (click)="handleApply()">
+  Apply Filters
+</button>

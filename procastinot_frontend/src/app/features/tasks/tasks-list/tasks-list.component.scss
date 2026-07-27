@@ -1,0 +1,190 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 1.4rem;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.task-count {
+  font-size: 0.9rem;
+  color: #999;
+  font-weight: normal;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-btn {
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  color: #666;
+}
+
+.filter-btn.active {
+  background: #fdf1f0;
+  color: #d35f55;
+}
+
+.new-task-btn {
+  background: #d35f55;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #f5f5f5;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1;
+    color: inherit;
+    opacity: 0.7;
+  }
+}
+
+.table-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+  align-items: center;
+}
+
+.table-head {
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+  padding: 12px 16px;
+}
+
+.th-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #666;
+  padding: 0;
+  text-align: left;
+}
+
+.th-btn.active {
+  color: #d35f55;
+  font-weight: 600;
+}
+
+.sort-icon {
+  font-size: 13px;
+  width: 13px;
+  height: 13px;
+  color: #ccc;
+}
+
+.sort-icon.active {
+  color: #d35f55;
+}
+
+.table-row {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f5f5f5;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.task-name {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.due-overdue {
+  margin: 0;
+  color: #d32f2f;
+  font-size: 0.85rem;
+}
+
+.due-normal {
+  margin: 0;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.action-btn {
+  color: #999;
+}
+
+.loading-row {
+  display: flex;
+  justify-content: center;
+  padding: 56px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 56px 24px;
+}
+
+.empty-emoji {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.empty-title {
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.empty-subtitle {
+  color: #999;
+  font-size: 0.85rem;
+  margin: 0;
+}

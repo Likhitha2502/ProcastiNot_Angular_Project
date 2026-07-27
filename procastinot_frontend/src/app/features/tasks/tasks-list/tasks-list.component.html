@@ -1,0 +1,122 @@
+<div class="root">
+  <div class="page-header">
+    <h1 class="page-title">
+      My tasks <span class="task-count">{{ taskCount$ | async }}</span>
+    </h1>
+    <div class="header-actions">
+      @if (hasActiveFilters$ | async) {
+        <button
+          mat-icon-button
+          matTooltip="Filter"
+          class="filter-btn active"
+          (click)="openFilterDrawer()"
+        >
+          <mat-icon>filter_list</mat-icon>
+        </button>
+      } @else {
+        <button mat-icon-button matTooltip="Filter" class="filter-btn" (click)="openFilterDrawer()">
+          <mat-icon>filter_list</mat-icon>
+        </button>
+      }
+      <button class="new-task-btn" (click)="openAddTask()">+ New Task</button>
+    </div>
+  </div>
+
+  @if (filters$ | async; as filters) {
+    @if (hasActiveFilters$ | async) {
+      <div class="filter-chips">
+        @for (s of filters.status; track s) {
+          <span class="chip" [style.background]="statusColors[s].bg" [style.color]="statusColors[s].color">
+            {{ s }}
+            <button (click)="removeStatus(s, filters.status)">&times;</button>
+          </span>
+        }
+        @for (p of filters.priority; track p) {
+          <span class="chip" [style.background]="priorityColors[p].bg" [style.color]="priorityColors[p].color">
+            {{ p }}
+            <button (click)="removePriority(p, filters.priority)">&times;</button>
+          </span>
+        }
+        @if (filters.dueDateFrom) {
+          <span class="chip">
+            From: {{ formatDate(filters.dueDateFrom) }}
+            <button (click)="removeDueDateFrom()">&times;</button>
+          </span>
+        }
+        @if (filters.dueDateTo) {
+          <span class="chip">
+            To: {{ formatDate(filters.dueDateTo) }}
+            <button (click)="removeDueDateTo()">&times;</button>
+          </span>
+        }
+      </div>
+    }
+  }
+
+  <div class="table-card">
+    <div class="table-head table-grid">
+      @if (sort$ | async; as sort) {
+        @for (col of columns; track col.field) {
+          <button class="th-btn" [class.active]="sort.field === col.field" (click)="handleSort(col.field, sort)">
+            {{ col.label }}
+            @if (sort.field === col.field) {
+              <mat-icon class="sort-icon active">{{ sort.direction === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            } @else {
+              <mat-icon class="sort-icon">unfold_more</mat-icon>
+            }
+          </button>
+        }
+      }
+      <span></span>
+    </div>
+
+    @if ((loading$ | async)?.list) {
+      <div class="loading-row">
+        <mat-spinner diameter="28"></mat-spinner>
+      </div>
+    } @else {
+      @if ((tasks$ | async)?.length === 0) {
+        <div class="empty-state">
+          <div class="empty-emoji">&#128203;</div>
+          <p class="empty-title">
+            {{ (hasActiveFilters$ | async) ? 'No tasks match your filters' : 'No tasks yet' }}
+          </p>
+          <p class="empty-subtitle">
+            {{ (hasActiveFilters$ | async) ? 'Try adjusting or clearing your filters' : 'Click "+ New Task" to get started' }}
+          </p>
+        </div>
+      } @else {
+        @for (task of tasks$ | async; track task.id) {
+          <div class="table-row table-grid">
+            <p class="task-name">{{ task.title }}</p>
+
+            <span class="chip" [style.background]="statusColors[task.status].bg" [style.color]="statusColors[task.status].color">
+              {{ task.status }}
+            </span>
+
+            <span class="chip" [style.background]="priorityColors[task.priority].bg" [style.color]="priorityColors[task.priority].color">
+              {{ task.priority }}
+            </span>
+
+            <p [class.due-overdue]="isOverdue(task.dueDate)" [class.due-normal]="!isOverdue(task.dueDate)">
+              {{ formatDate(task.dueDate) }}
+            </p>
+
+            <div class="row-actions">
+              <button mat-button matTooltip="Edit" class="action-btn" (click)="openEdit(task)">Edit</button>
+              <button
+                mat-icon-button
+                matTooltip="Delete"
+                class="action-btn"
+                [disabled]="(loading$ | async)?.delete"
+                (click)="openDelete(task)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+      }
+    }
+  </div>
+</div>

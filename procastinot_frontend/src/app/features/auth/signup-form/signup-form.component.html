@@ -1,0 +1,46 @@
+<form [formGroup]="form" (ngSubmit)="onRegister()" (change)="onFieldChange()" class="signup-form">
+  @if (error$ | async; as error) {
+    <p class="error-text">{{ error }}</p>
+  }
+
+  <div class="name-row">
+    <div class="name-field">
+      <label class="field-label">First name</label>
+      <mat-form-field appearance="outline" class="text-field">
+        <input matInput formControlName="firstName" placeholder="First Name" />
+      </mat-form-field>
+    </div>
+    <div class="name-field">
+      <label class="field-label">Last name</label>
+      <mat-form-field appearance="outline" class="text-field">
+        <input matInput formControlName="lastName" placeholder="Last Name" />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Email</label>
+    <mat-form-field appearance="outline" class="text-field">
+      <input matInput type="email" formControlName="email" placeholder="Enter email address" />
+    </mat-form-field>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Password</label>
+    <app-password-input formControlName="password" placeholder="Enter Account Password"></app-password-input>
+  </div>
+
+  <button
+    mat-flat-button
+    color="primary"
+    class="primary-button"
+    type="submit"
+    [disabled]="(loading$ | async) ?? false"
+  >
+    {{ (loading$ | async) ? 'Signing up...' : 'Sign Up' }}
+  </button>
+
+  <button mat-button class="secondary-link" type="button" (click)="backToLogin.emit()">
+    Already have an account? Sign In
+  </button>
+</form>

@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>New Task</h2>
+
+<div mat-dialog-content [formGroup]="form" (change)="onFieldChange()">
+  @if (error$ | async; as error) {
+    <div class="error-alert">{{ error }}</div>
+  }
+
+  <div class="field-group">
+    <label class="field-label">Task title</label>
+    <mat-form-field appearance="outline" class="text-field">
+      <input matInput formControlName="title" placeholder="Enter task title" />
+    </mat-form-field>
+  </div>
+
+  <div class="row-group">
+    <div>
+      <label class="field-label">Status</label>
+      <mat-form-field appearance="outline" class="text-field">
+        <mat-select formControlName="status">
+          @for (s of statuses; track s) {
+            <mat-option [value]="s">{{ s }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <label class="field-label">Priority</label>
+      <mat-form-field appearance="outline" class="text-field">
+        <mat-select formControlName="priority">
+          @for (p of priorities; track p) {
+            <mat-option [value]="p">{{ p }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Due Date</label>
+    <mat-form-field appearance="outline" class="text-field">
+      <input matInput type="date" formControlName="dueDate" />
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="handleClose()" [disabled]="(loading$ | async)?.create">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="handleSave()"
+    [disabled]="(loading$ | async)?.create || !form.getRawValue().title.trim()"
+  >
+    @if ((loading$ | async)?.create) {
+      <mat-spinner diameter="18"></mat-spinner>
+    } @else {
+      Create Task
+    }
+  </button>
+</div>

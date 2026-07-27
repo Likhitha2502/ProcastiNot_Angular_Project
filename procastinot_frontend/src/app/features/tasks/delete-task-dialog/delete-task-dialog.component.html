@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Delete task?</h2>
+<div mat-dialog-content>
+  <p>Are you sure you want to delete the task <strong>{{ data.task.title }}</strong>?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="handleCancel()" [disabled]="(loading$ | async)?.delete">Cancel</button>
+  <button mat-flat-button color="warn" (click)="handleConfirm()" [disabled]="(loading$ | async)?.delete">
+    @if ((loading$ | async)?.delete) {
+      <mat-spinner diameter="16"></mat-spinner>
+    } @else {
+      Delete
+    }
+  </button>
+</div>

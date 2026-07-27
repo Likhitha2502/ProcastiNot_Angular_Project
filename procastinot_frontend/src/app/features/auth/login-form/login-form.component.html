@@ -1,0 +1,34 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (change)="onFieldChange()" class="login-form">
+  @if (error$ | async; as error) {
+    <p class="error-text">{{ error }}</p>
+  }
+
+  <div class="field-group">
+    <label class="field-label">Email</label>
+    <mat-form-field appearance="outline" class="text-field">
+      <input matInput type="email" formControlName="email" placeholder="Enter email address" />
+    </mat-form-field>
+  </div>
+
+  <div class="password-field-group">
+    <app-password-input
+      formControlName="password"
+      label="Password"
+      placeholder="Enter Account Password"
+    ></app-password-input>
+  </div>
+
+  <div class="forgot-row">
+    <button type="button" mat-button (click)="forgotClick.emit()">Forgot Password?</button>
+  </div>
+
+  <button mat-flat-button color="primary" class="primary-button" type="submit" [disabled]="form.invalid">
+    Sign in to my workspace
+  </button>
+
+  <p class="or-divider">or</p>
+
+  <button mat-stroked-button class="primary-button" type="button" (click)="signUpClick.emit()">
+    Create an account
+  </button>
+</form>

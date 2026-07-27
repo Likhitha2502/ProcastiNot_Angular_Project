@@ -1,0 +1,60 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$red-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: (
+        brand-family: 'Georgia, serif',
+        plain-family: 'Georgia, serif',
+      ),
+      density: 0,
+    )
+  );
+
+  // Nudge the generated M3 red palette to the exact FocusFlow brand coral.
+  // Wrapped in `& {}` so this declaration block is emitted after the mixin's
+  // nested output regardless of Sass's future declaration-ordering behavior.
+  & {
+    --mat-sys-primary: #d35f55;
+    --mat-sys-on-primary: #ffffff;
+  }
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Georgia', serif;
+  background: #ffffff;
+  color: #333333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// Toast severity colors — global because MatSnackBar renders in the CDK overlay,
+// outside any component's view encapsulation.
+.mat-mdc-snack-bar-container {
+  &.toast-success .mdc-snackbar__surface {
+    background: #2e7d32 !important;
+  }
+  &.toast-error .mdc-snackbar__surface {
+    background: #d32f2f !important;
+  }
+  &.toast-info .mdc-snackbar__surface {
+    background: #1565c0 !important;
+  }
+  &.toast-warning .mdc-snackbar__surface {
+    background: #e65100 !important;
+  }
+}
+
+.filter-drawer-panel .mat-mdc-dialog-container {
+  border-radius: 0;
+}

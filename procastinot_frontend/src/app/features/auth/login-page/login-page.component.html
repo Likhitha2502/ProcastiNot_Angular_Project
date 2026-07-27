@@ -1,0 +1,27 @@
+<div class="page-wrapper">
+  <div class="card">
+    <div class="logo-container">
+      <div class="logo-avatar">F</div>
+      <h2 class="logo-title">FocusFlow</h2>
+    </div>
+
+    <div class="header-container">
+      <p class="header-accent">{{ headerText }}</p>
+      <div class="divider"></div>
+    </div>
+
+    @switch (view()) {
+      @case ('login') {
+        <app-login-form (signUpClick)="showSignUp()" (forgotClick)="showForgot()"></app-login-form>
+      }
+      @case ('signup') {
+        <app-signup-form (backToLogin)="showLogin()"></app-signup-form>
+      }
+      @case ('forgot') {
+        <app-forgot-password-form (backToLogin)="showLogin()"></app-forgot-password-form>
+      }
+    }
+
+    <p class="footer-caption">Only you can see your tasks. No shared access.</p>
+  </div>
+</div>

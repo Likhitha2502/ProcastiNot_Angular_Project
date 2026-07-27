@@ -1,0 +1,56 @@
+<div class="grid">
+  <div class="card">
+    <p class="card-title">Profile</p>
+    <p class="card-subtitle">Update your personal information</p>
+
+    @if (vm$ | async; as vm) {
+      <div class="avatar-wrapper">
+        <div class="avatar-large" (click)="openPictureDialog(vm.profileIcon)">
+          @if (avatarSrc(vm.profileIcon); as src) {
+            <img [src]="src" alt="Profile" />
+          } @else {
+            <span>{{ initials(vm.user?.firstName, vm.user?.lastName) }}</span>
+          }
+        </div>
+        <button mat-icon-button class="camera-btn" (click)="openPictureDialog(vm.profileIcon)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    }
+
+    <form [formGroup]="form" class="field-row">
+      <div>
+        <label class="field-label">First name</label>
+        <mat-form-field appearance="outline" class="text-field">
+          <input matInput formControlName="firstName" />
+        </mat-form-field>
+      </div>
+      <div>
+        <label class="field-label">Last name</label>
+        <mat-form-field appearance="outline" class="text-field">
+          <input matInput formControlName="lastName" />
+        </mat-form-field>
+      </div>
+    </form>
+
+    <button mat-stroked-button class="save-button" (click)="handleSave()" [disabled]="saving">
+      @if (saving) {
+        <mat-spinner diameter="16"></mat-spinner>
+      } @else {
+        Save
+      }
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="password-icon">&#128274;</div>
+    <p class="password-card-title">Change Password</p>
+    <p class="password-hint">
+      For your security, we recommend using a strong password that you don't use for other accounts.
+    </p>
+
+    <button mat-stroked-button class="save-button full" (click)="openChangePassword()">
+      Change Password
+    </button>
+  </div>
+</div>

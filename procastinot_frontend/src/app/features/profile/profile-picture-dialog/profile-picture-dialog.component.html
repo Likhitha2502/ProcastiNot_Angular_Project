@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Update Photo</h2>
+
+<div mat-dialog-content class="dialog-content">
+  <div class="avatar-preview">
+    @if (previewSrc; as src) {
+      <img [src]="src" alt="Profile preview" />
+    } @else {
+      <span>{{ data.initials }}</span>
+    }
+  </div>
+
+  <button mat-stroked-button (click)="triggerFileInput()">
+    <mat-icon>cloud_upload</mat-icon>
+    Upload New
+  </button>
+  <input #fileInput type="file" hidden accept="image/*" (change)="handleFileChange($event)" />
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="handleCancel()">Cancel</button>
+  <button mat-button color="warn" (click)="markDeleted()">
+    <mat-icon>delete</mat-icon>
+    Delete
+  </button>
+  <button mat-flat-button color="primary" (click)="handleSet()">Set</button>
+</div>

@@ -1,0 +1,65 @@
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fdf1f0;
+  padding: 24px;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.logo-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #d35f55;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.logo-title {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.header-container {
+  margin-bottom: 20px;
+}
+
+.header-accent {
+  color: #d35f55;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+}
+
+.footer-caption {
+  text-align: center;
+  color: #999;
+  font-size: 0.75rem;
+  margin: 20px 0 0;
+}

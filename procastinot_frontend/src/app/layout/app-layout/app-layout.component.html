@@ -1,0 +1,52 @@
+<div class="layout-root">
+  <aside class="sidebar">
+    <div class="logo-row" (click)="goToTasks()">
+      <div class="logo-avatar">F</div>
+      <span class="logo-text">FocusFlow</span>
+    </div>
+
+    <div class="sidebar-divider"></div>
+    <p class="nav-label">MY WORKSPACE</p>
+
+    <nav class="nav">
+      <a class="nav-item" [routerLink]="routes.tasks" routerLinkActive="nav-item-active">
+        <span class="nav-icon">&#9776;</span>
+        My Tasks
+      </a>
+      <a class="nav-item" [routerLink]="routes.progress" routerLinkActive="nav-item-active">
+        <span class="nav-icon">&#9654;</span>
+        Progress
+      </a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="header">
+      <div class="header-spacer"></div>
+
+      @if (userProfile$ | async; as user) {
+        <button class="profile-btn" [matMenuTriggerFor]="profileMenu">
+          <div class="profile-avatar">{{ initials(user.firstName, user.lastName) }}</div>
+          <span class="profile-name">{{ user.firstName }}</span>
+          <span class="caret">&#9662;</span>
+        </button>
+
+        <mat-menu #profileMenu="matMenu">
+          <div class="dropdown-header">
+            <div class="dropdown-avatar">{{ initials(user.firstName, user.lastName) }}</div>
+            <div>
+              <p class="dropdown-name">{{ user.firstName }}</p>
+              <p class="dropdown-email">{{ user.email }}</p>
+            </div>
+          </div>
+          <button mat-menu-item (click)="goToProfile()">View Profile</button>
+          <button mat-menu-item class="sign-out" (click)="logout()">Sign out</button>
+        </mat-menu>
+      }
+    </header>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
