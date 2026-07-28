@@ -1,0 +1,17 @@
+package com.procastinot.repository;
+
+import com.procastinot.entity.Task;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface TaskRepository extends JpaRepository<Task, Long> {
+    List<Task> findByUserEmail(String userEmail);
+
+    Optional<Task> findByIdAndUserEmail(Long id, String userEmail);
+
+    long countByUserEmail(String userEmail);
+
+    long countByUserEmailAndStatus(String userEmail, String status);
+}
