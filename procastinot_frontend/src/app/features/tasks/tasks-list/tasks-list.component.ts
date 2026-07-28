@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 
 import { PRIORITY_COLORS, STATUS_COLORS } from '@app/core/models';
-import type { SortDirection, SortField, Task, TasksPriority, TaskStatus } from '@app/core/models';
+import type { SortDirection, SortField, Task, TaskFilters, TasksPriority, TaskStatus } from '@app/core/models';
 import { TasksActions } from '@app/store/tasks/tasks.actions';
 import {
   selectHasActiveFilters,
@@ -48,6 +48,7 @@ export class TasksListComponent implements OnInit {
 
   readonly columns: { label: string; field: SortField }[] = [
     { label: 'Task', field: 'title' },
+    { label: 'Description', field: 'description' },
     { label: 'Status', field: 'status' },
     { label: 'Priority', field: 'priority' },
     { label: 'Due Date', field: 'dueDate' },
@@ -60,8 +61,11 @@ export class TasksListComponent implements OnInit {
   readonly taskCount$ = this.store.select(selectTaskCount);
   readonly hasActiveFilters$ = this.store.select(selectHasActiveFilters);
 
-  readonly statusColors = STATUS_COLORS;
-  readonly priorityColors = PRIORITY_COLORS;
+  // Loosely typed so an unexpected status/priority value from the API renders
+  // an uncolored chip instead of throwing (STATUS_COLORS/PRIORITY_COLORS are
+  // only guaranteed to cover the values our own TaskStatus/TasksPriority types know about).
+  readonly statusColors: Partial<Record<string, { bg: string; color: string }>> = STATUS_COLORS;
+  readonly priorityColors: Partial<Record<string, { bg: string; color: string }>> = PRIORITY_COLORS;
 
   readonly isOverdue = isOverdue;
   readonly formatDate = formatDate;
@@ -73,6 +77,16 @@ export class TasksListComponent implements OnInit {
   handleSort(field: SortField, currentSort: { field: SortField; direction: SortDirection }): void {
     const direction: SortDirection = currentSort.field === field && currentSort.direction === 'asc' ? 'desc' : 'asc';
     this.store.dispatch(TasksActions.setSort({ field, direction }));
+  }
+
+  activeFilterCount(filters: TaskFilters): number {
+    return (
+      filters.status.length +
+      filters.priority.length +
+      (filters.dueDateFrom ? 1 : 0) +
+      (filters.dueDateTo ? 1 : 0) +
+      (filters.titleSearch ? 1 : 0)
+    );
   }
 
   removeStatus(status: TaskStatus, currentStatuses: TaskStatus[]): void {
@@ -95,6 +109,10 @@ export class TasksListComponent implements OnInit {
     this.store.dispatch(TasksActions.setFilters({ filters: { dueDateTo: null } }));
   }
 
+  removeTitleSearch(): void {
+    this.store.dispatch(TasksActions.setFilters({ filters: { titleSearch: null } }));
+  }
+
   openAddTask(): void {
     this.dialog.open(AddTaskModalComponent, { width: '460px' });
   }
@@ -108,7 +126,7 @@ export class TasksListComponent implements OnInit {
   }
 
   openEdit(task: Task): void {
-    this.dialog.open(EditTaskDialogComponent, { width: '480px', data: { task } });
+    this.dialog.open(EditTaskDialogComponent, { width: '480px', data: { taskId: task.id } });
   }
 
   openDelete(task: Task): void {

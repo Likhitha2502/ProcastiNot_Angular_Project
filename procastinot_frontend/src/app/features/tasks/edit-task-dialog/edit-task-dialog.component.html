@@ -1,48 +1,78 @@
 <h2 mat-dialog-title>Edit Task</h2>
 <p class="subtitle">Update the fields below. Save is enabled only when changes are made.</p>
 
-<div mat-dialog-content [formGroup]="form" (change)="onFieldChange()">
-  @if (error$ | async; as error) {
-    <div class="error-alert">{{ error }}</div>
-  }
-
-  <div class="field-group">
-    <label class="field-label">Task title</label>
-    <mat-form-field appearance="outline" class="text-field">
-      <input matInput formControlName="title" placeholder="Enter task title" />
-    </mat-form-field>
+@if (fetchLoading$ | async) {
+  <div mat-dialog-content class="loading-content">
+    <mat-spinner diameter="28"></mat-spinner>
   </div>
+} @else {
+  <div mat-dialog-content [formGroup]="form" (change)="onFieldChange()">
+    @if (error$ | async; as error) {
+      <div class="error-alert">{{ error }}</div>
+    }
 
-  <div class="row-group">
-    <div>
-      <label class="field-label">Status</label>
+    <div class="field-group">
+      <label class="field-label">Task title</label>
       <mat-form-field appearance="outline" class="text-field">
-        <mat-select formControlName="status">
-          @for (s of statuses; track s) {
-            <mat-option [value]="s">{{ s }}</mat-option>
-          }
-        </mat-select>
+        <input matInput formControlName="title" placeholder="Enter task title" />
+        @if (form.controls.title.invalid && form.controls.title.touched) {
+          <mat-error>
+            @if (form.controls.title.hasError('required')) {
+              Task title is required
+            } @else if (form.controls.title.hasError('maxlength')) {
+              Title must be 255 characters or less
+            }
+          </mat-error>
+        }
       </mat-form-field>
     </div>
-    <div>
-      <label class="field-label">Priority</label>
+
+    <div class="field-group">
+      <label class="field-label">Description</label>
       <mat-form-field appearance="outline" class="text-field">
-        <mat-select formControlName="priority">
-          @for (p of priorities; track p) {
-            <mat-option [value]="p">{{ p }}</mat-option>
-          }
-        </mat-select>
+        <textarea matInput formControlName="description" rows="2" placeholder="Add a description…"></textarea>
+        @if (form.controls.description.invalid && form.controls.description.touched) {
+          <mat-error>Description must be 255 characters or less</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="row-group">
+      <div>
+        <label class="field-label">Status</label>
+        <mat-form-field appearance="outline" class="text-field">
+          <mat-select formControlName="status">
+            @for (s of statuses; track s) {
+              <mat-option [value]="s">{{ s }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <label class="field-label">Priority</label>
+        <mat-form-field appearance="outline" class="text-field">
+          <mat-select formControlName="priority">
+            @for (p of priorities; track p) {
+              <mat-option [value]="p">{{ p }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Due Date</label>
+      <mat-form-field appearance="outline" class="text-field">
+        <input matInput [matDatepicker]="dueDatePicker" formControlName="dueDate" placeholder="Select due date" />
+        <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #dueDatePicker></mat-datepicker>
+        @if (form.controls.dueDate.invalid && form.controls.dueDate.touched) {
+          <mat-error>Due date is required</mat-error>
+        }
       </mat-form-field>
     </div>
   </div>
-
-  <div class="field-group">
-    <label class="field-label">Due Date</label>
-    <mat-form-field appearance="outline" class="text-field">
-      <input matInput type="date" formControlName="dueDate" />
-    </mat-form-field>
-  </div>
-</div>
+}
 
 <div mat-dialog-actions>
   <button mat-button (click)="handleClose()" [disabled]="(loading$ | async)?.update">Cancel</button>
@@ -50,7 +80,7 @@
     mat-flat-button
     color="primary"
     (click)="handleSave()"
-    [disabled]="!isDirty || !form.getRawValue().title.trim() || (loading$ | async)?.update"
+    [disabled]="!isDirty || form.invalid || (loading$ | async)?.update || (fetchLoading$ | async)"
   >
     @if ((loading$ | async)?.update) {
       <mat-spinner diameter="18"></mat-spinner>

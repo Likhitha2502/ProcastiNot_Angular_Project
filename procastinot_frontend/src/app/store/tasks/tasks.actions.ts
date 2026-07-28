@@ -28,6 +28,11 @@ export const TasksActions = createActionGroup({
     'Delete Task Success': emptyProps(),
     'Delete Task Failure': props<{ error: string }>(),
 
+    'Fetch Task By Id Request': props<{ id: Task['id'] }>(),
+    'Fetch Task By Id Success': props<{ task: Task }>(),
+    'Fetch Task By Id Failure': props<{ error: string }>(),
+    'Clear Fetched Task': emptyProps(),
+
     'Set Sort': props<{ field: SortField; direction: SortDirection }>(),
     'Clear Tasks Errors': emptyProps(),
 

@@ -33,8 +33,8 @@ const STATUS_LABEL: Record<string, string> = {
 const KEY_TO_STATUS: Record<string, TaskStatus> = {
   toDoTasks: 'TODO',
   toDoPercent: 'TODO',
-  inProgressTasks: 'IN_PROGRESS',
-  inProgressPercent: 'IN_PROGRESS',
+  inProgressTasks: 'IN PROGRESS',
+  inProgressPercent: 'IN PROGRESS',
   inReviewTasks: 'REVIEW',
   inReviewPercent: 'REVIEW',
   completedTasks: 'DONE',

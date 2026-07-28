@@ -1,5 +1,6 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -27,5 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideStore(reducers),
     provideEffects([AuthEffects, ProfileEffects, ProgressEffects, TasksEffects, ToastEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
+    provideNativeDateAdapter(),
   ],
 };

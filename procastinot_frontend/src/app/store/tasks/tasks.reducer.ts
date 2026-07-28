@@ -6,11 +6,13 @@ import { TasksActions } from './tasks.actions';
 
 export interface TaskState {
   tasks: Task[];
+  fetchedTask: Task | null;
   loading: {
     list: boolean;
     create: boolean;
     update: boolean;
     delete: boolean;
+    fetchById: boolean;
   };
   filters: TaskFilters;
   sort: {
@@ -23,7 +25,8 @@ export interface TaskState {
 
 export const initialTaskState: TaskState = {
   tasks: [],
-  loading: { list: false, create: false, update: false, delete: false },
+  fetchedTask: null,
+  loading: { list: false, create: false, update: false, delete: false, fetchById: false },
   status: null,
   error: null,
   filters: {
@@ -31,6 +34,7 @@ export const initialTaskState: TaskState = {
     priority: [],
     dueDateFrom: null,
     dueDateTo: null,
+    titleSearch: null,
   },
   sort: {
     field: 'dueDate',
@@ -110,6 +114,28 @@ export const tasksReducer = createReducer(
     loading: { ...state.loading, delete: false },
     error,
     status: null,
+  })),
+
+  on(TasksActions.fetchTaskByIdRequest, (state) => ({
+    ...state,
+    loading: { ...state.loading, fetchById: true },
+    fetchedTask: null,
+    error: null,
+  })),
+  on(TasksActions.fetchTaskByIdSuccess, (state, { task }) => ({
+    ...state,
+    loading: { ...state.loading, fetchById: false },
+    fetchedTask: task,
+  })),
+  on(TasksActions.fetchTaskByIdFailure, (state, { error }) => ({
+    ...state,
+    loading: { ...state.loading, fetchById: false },
+    error,
+  })),
+  on(TasksActions.clearFetchedTask, (state) => ({
+    ...state,
+    fetchedTask: null,
+    loading: { ...state.loading, fetchById: false },
   })),
 
   on(TasksActions.setSort, (state, { field, direction }) => ({
