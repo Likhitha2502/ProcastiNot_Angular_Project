@@ -1,0 +1,75 @@
+import { useEffect,useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { Box, Paper,Typography } from '@mui/material';
+
+import logoSrc from '@/assets/logo.svg';
+
+import { ROUTES } from '@/constants';
+
+import { boundActions,selectors } from '../../app/index';
+import { ForgotPasswordForm,LoginForm, SignUpForm } from '../../components/index';
+import { useLoginPageStyles } from '../../pages/Login/LoginPage.styles';
+
+const LoginPage = () => {
+  const { classes } = useLoginPageStyles();
+  const [view, setView] = useState<'login' | 'signup' | 'forgot'>('login');
+  const navigate = useNavigate();
+  const registrationSuccess = useSelector(selectors.auth.registrationSuccess);
+  const isLoginSuccess = useSelector(selectors.auth.isLoginSuccess);
+
+  // Auto-switch to login view after successful registration
+  useEffect(() => {
+    if (registrationSuccess) {
+      boundActions.auth.clearError();
+      setView('login');
+    }
+  }, [registrationSuccess]);
+
+  // Navigate to dashboard/app after successful login
+  useEffect(() => {
+    if (isLoginSuccess) {
+      navigate(ROUTES.tasks);
+    }
+  }, [isLoginSuccess, navigate]);
+
+  const getHeaderText = () => {
+    if (view === 'login') return 'Sign in';
+    if (view === 'signup') return 'Create Account';
+    return 'Reset Password';
+  };
+
+  return (
+    <Box className={classes.pageWrapper}>
+      <Paper className={classes.card}>
+        <Box className={classes.logoContainer}>
+          <img src={logoSrc} alt="ProcrastiNot" style={{ height: '60px', objectFit: 'contain' }} />
+        </Box>
+
+        <Box className={classes.headerContainer}>
+          <Typography variant="body1" className={classes.headerAccentTypography}>
+            {getHeaderText()}
+          </Typography>
+          <Box className={classes.divider} />
+        </Box>
+
+        {view === 'login' && (
+          <LoginForm
+            onSignUpClick={() => { boundActions.auth.clearError(); setView('signup'); }}
+            onForgotClick={() => { boundActions.auth.clearError(); setView('forgot'); }}
+          />
+        )}
+
+        {view === 'signup' && <SignUpForm onBackToLogin={() => { boundActions.auth.clearError(); setView('login'); }} />}
+        {view === 'forgot' && <ForgotPasswordForm onBackToLogin={() => { boundActions.auth.clearError(); setView('login'); }} />}
+
+        <Typography variant="caption" className={classes.footerCaption}>
+          Only you can see your tasks. No shared access.
+        </Typography>
+      </Paper>
+    </Box>
+  );
+};
+
+export default LoginPage;
