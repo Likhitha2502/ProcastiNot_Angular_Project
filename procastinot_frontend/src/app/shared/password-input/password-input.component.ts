@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
   standalone: true,
   imports: [FormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule],
   templateUrl: './password-input.component.html',
+  styleUrl: './password-input.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
