@@ -10,8 +10,7 @@
   margin: 0 0 8px;
 }
 
-.field-group,
-.password-field-group {
+.field-group {
   margin-bottom: 8px;
 }
 
@@ -24,6 +23,7 @@
 
 .text-field {
   width: 100%;
+  min-width: 0;
 }
 
 .forgot-row {

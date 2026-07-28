@@ -16,6 +16,10 @@
 
 .name-field {
   flex: 1;
+  // Flex items get an automatic min-width based on their content's intrinsic
+  // size unless overridden — Material's form-field infix has a fixed 180px
+  // width internally, which otherwise forces these columns to overflow.
+  min-width: 0;
 }
 
 .field-group {
@@ -31,6 +35,7 @@
 
 .text-field {
   width: 100%;
+  min-width: 0;
 }
 
 .primary-button {

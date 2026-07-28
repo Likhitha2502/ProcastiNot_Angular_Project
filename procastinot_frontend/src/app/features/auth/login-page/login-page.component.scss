@@ -19,37 +19,25 @@
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
-.logo-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: #d35f55;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.logo-title {
-  margin: 0;
-  font-size: 1.3rem;
-  color: #333;
+.logo-image {
+  height: 60px;
+  object-fit: contain;
 }
 
 .header-container {
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .header-accent {
   color: #d35f55;
   font-weight: 600;
   margin: 0 0 8px;
+  text-align: center;
 }
 
 .divider {
