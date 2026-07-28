@@ -1,0 +1,99 @@
+<div class="root">
+  <div class="page-header">
+    <h1 class="page-title">Task Progress</h1>
+  </div>
+
+  <div class="grid">
+    <!-- Left: Donut Chart -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Distribution</span>
+      </div>
+      <div class="card-body">
+        @if (loading$ | async; as loading) {
+          @if (loading.percent) {
+            <div class="centered">
+              <mat-spinner diameter="28"></mat-spinner>
+            </div>
+          } @else {
+            @if (percent$ | async; as percent) {
+              <div class="chart-wrap">
+                <svg
+                  [attr.width]="svgSize"
+                  [attr.height]="svgSize"
+                  [attr.viewBox]="'0 0 ' + svgSize + ' ' + svgSize"
+                >
+                  @for (slice of buildSlices(percent); track slice.key) {
+                    <path [attr.d]="slice.path" [attr.fill]="slice.color" opacity="0.88" />
+                  }
+                  <text
+                    [attr.x]="svgSize / 2"
+                    [attr.y]="svgSize / 2"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    class="donut-label"
+                  >TASK</text>
+                </svg>
+                <div class="legend">
+                  @for (row of buildLegend(percent); track row.key) {
+                    <div class="legend-row">
+                      <div class="legend-label">
+                        <span class="legend-dot" [style.background-color]="row.dotColor"></span>
+                        <span class="status-chip" [style.background-color]="row.bg" [style.color]="row.chipColor">
+                          {{ row.label }}
+                        </span>
+                      </div>
+                      <span class="legend-pct">{{ row.pctLabel }}%</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            } @else {
+              <div class="centered">
+                <p class="empty-text">No data yet</p>
+              </div>
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Right: Count by Status -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Tasks by Status</span>
+      </div>
+      <div class="card-body">
+        @if (loading$ | async; as loading) {
+          @if (loading.count) {
+            <div class="centered">
+              <mat-spinner diameter="28"></mat-spinner>
+            </div>
+          } @else {
+            @if (count$ | async; as count) {
+              @for (row of buildCountRows(count); track row.key) {
+                <div class="count-row">
+                  <div class="count-label">
+                    <span class="count-badge" [style.background-color]="row.color"></span>
+                    <span class="status-chip" [style.background-color]="row.bg" [style.color]="row.color">
+                      {{ row.label }}
+                    </span>
+                  </div>
+                  <span class="count-value">{{ row.value }}</span>
+                </div>
+              }
+              <div class="total-row">
+                <span class="total-label">Total</span>
+                <span class="total-value">{{ total$ | async }}</span>
+              </div>
+            } @else {
+              <div class="centered">
+                <p class="empty-text">No data yet</p>
+              </div>
+            }
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>

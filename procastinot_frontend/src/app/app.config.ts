@@ -10,6 +10,7 @@ import { authInterceptor } from '@app/core/interceptors/auth.interceptor';
 import { errorInterceptor } from '@app/core/interceptors/error.interceptor';
 import { AuthEffects } from '@app/store/auth/auth.effects';
 import { ProfileEffects } from '@app/store/profile/profile.effects';
+import { ProgressEffects } from '@app/store/progress/progress.effects';
 import { TasksEffects } from '@app/store/tasks/tasks.effects';
 import { ToastEffects } from '@app/store/toast/toast.effects';
 import { reducers } from '@app/store/index';
@@ -24,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
     provideStore(reducers),
-    provideEffects([AuthEffects, ProfileEffects, TasksEffects, ToastEffects]),
+    provideEffects([AuthEffects, ProfileEffects, ProgressEffects, TasksEffects, ToastEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
   ],
 };
