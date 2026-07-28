@@ -1,7 +1,13 @@
 .subtitle {
   color: #999;
   font-size: 0.8rem;
-  margin: -8px 0 16px;
+  margin: -8px 0 0 24px;
+}
+
+.loading-content {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
 }
 
 .error-alert {
@@ -22,6 +28,13 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-bottom: 20px;
+
+  // Grid items get an automatic min-width based on their content's intrinsic
+  // size unless overridden — Material's form-field infix has a fixed 180px
+  // width internally, which otherwise forces these columns to overflow.
+  > div {
+    min-width: 0;
+  }
 }
 
 .field-label {
@@ -34,4 +47,5 @@
 
 .text-field {
   width: 100%;
+  min-width: 0;
 }

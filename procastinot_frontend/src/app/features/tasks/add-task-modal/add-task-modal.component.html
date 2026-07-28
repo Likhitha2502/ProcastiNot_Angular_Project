@@ -9,6 +9,25 @@
     <label class="field-label">Task title</label>
     <mat-form-field appearance="outline" class="text-field">
       <input matInput formControlName="title" placeholder="Enter task title" />
+      @if (form.controls.title.invalid && form.controls.title.touched) {
+        <mat-error>
+          @if (form.controls.title.hasError('required')) {
+            Task title is required
+          } @else if (form.controls.title.hasError('maxlength')) {
+            Title must be 255 characters or less
+          }
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Description <span class="optional">(optional)</span></label>
+    <mat-form-field appearance="outline" class="text-field">
+      <textarea matInput formControlName="description" rows="2" placeholder="Add a description…"></textarea>
+      @if (form.controls.description.invalid && form.controls.description.touched) {
+        <mat-error>Description must be 255 characters or less</mat-error>
+      }
     </mat-form-field>
   </div>
 
@@ -38,7 +57,12 @@
   <div class="field-group">
     <label class="field-label">Due Date</label>
     <mat-form-field appearance="outline" class="text-field">
-      <input matInput type="date" formControlName="dueDate" />
+      <input matInput [matDatepicker]="dueDatePicker" formControlName="dueDate" placeholder="Select due date" />
+      <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #dueDatePicker></mat-datepicker>
+      @if (form.controls.dueDate.invalid && form.controls.dueDate.touched) {
+        <mat-error>Due date is required</mat-error>
+      }
     </mat-form-field>
   </div>
 </div>
@@ -49,7 +73,7 @@
     mat-flat-button
     color="primary"
     (click)="handleSave()"
-    [disabled]="(loading$ | async)?.create || !form.getRawValue().title.trim()"
+    [disabled]="(loading$ | async)?.create || form.invalid"
   >
     @if ((loading$ | async)?.create) {
       <mat-spinner diameter="18"></mat-spinner>

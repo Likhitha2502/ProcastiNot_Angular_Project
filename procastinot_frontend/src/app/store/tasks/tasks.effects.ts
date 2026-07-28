@@ -70,4 +70,18 @@ export class TasksEffects {
       )
     )
   );
+
+  fetchTaskById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TasksActions.fetchTaskByIdRequest),
+      switchMap(({ id }) =>
+        this.http.get<Task>(apiUrl(API.tasks.getById(id))).pipe(
+          map((task) => TasksActions.fetchTaskByIdSuccess({ task })),
+          catchError((error: HttpErrorResponse) =>
+            of(TasksActions.fetchTaskByIdFailure({ error: getResponseError(error) || 'Failed to load task.' }))
+          )
+        )
+      )
+    )
+  );
 }

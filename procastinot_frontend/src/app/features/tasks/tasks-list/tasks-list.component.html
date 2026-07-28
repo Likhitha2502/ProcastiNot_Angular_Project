@@ -4,17 +4,18 @@
       My tasks <span class="task-count">{{ taskCount$ | async }}</span>
     </h1>
     <div class="header-actions">
-      @if (hasActiveFilters$ | async) {
+      @if (filters$ | async; as filters) {
         <button
           mat-icon-button
           matTooltip="Filter"
-          class="filter-btn active"
+          class="filter-btn"
+          [class.active]="hasActiveFilters$ | async"
+          [matBadge]="activeFilterCount(filters)"
+          [matBadgeHidden]="activeFilterCount(filters) === 0"
+          matBadgeSize="small"
+          matBadgeColor="warn"
           (click)="openFilterDrawer()"
         >
-          <mat-icon>filter_list</mat-icon>
-        </button>
-      } @else {
-        <button mat-icon-button matTooltip="Filter" class="filter-btn" (click)="openFilterDrawer()">
           <mat-icon>filter_list</mat-icon>
         </button>
       }
@@ -26,13 +27,13 @@
     @if (hasActiveFilters$ | async) {
       <div class="filter-chips">
         @for (s of filters.status; track s) {
-          <span class="chip" [style.background]="statusColors[s].bg" [style.color]="statusColors[s].color">
+          <span class="chip" [style.background]="statusColors[s]?.bg" [style.color]="statusColors[s]?.color">
             {{ s }}
             <button (click)="removeStatus(s, filters.status)">&times;</button>
           </span>
         }
         @for (p of filters.priority; track p) {
-          <span class="chip" [style.background]="priorityColors[p].bg" [style.color]="priorityColors[p].color">
+          <span class="chip" [style.background]="priorityColors[p]?.bg" [style.color]="priorityColors[p]?.color">
             {{ p }}
             <button (click)="removePriority(p, filters.priority)">&times;</button>
           </span>
@@ -47,6 +48,12 @@
           <span class="chip">
             To: {{ formatDate(filters.dueDateTo) }}
             <button (click)="removeDueDateTo()">&times;</button>
+          </span>
+        }
+        @if (filters.titleSearch) {
+          <span class="chip">
+            Title: "{{ filters.titleSearch }}"
+            <button (click)="removeTitleSearch()">&times;</button>
           </span>
         }
       </div>
@@ -90,11 +97,13 @@
           <div class="table-row table-grid">
             <p class="task-name">{{ task.title }}</p>
 
-            <span class="chip" [style.background]="statusColors[task.status].bg" [style.color]="statusColors[task.status].color">
+            <p class="task-name">{{ task.description || '—' }}</p>
+
+            <span class="chip" [style.background]="statusColors[task.status]?.bg" [style.color]="statusColors[task.status]?.color">
               {{ task.status }}
             </span>
 
-            <span class="chip" [style.background]="priorityColors[task.priority].bg" [style.color]="priorityColors[task.priority].color">
+            <span class="chip" [style.background]="priorityColors[task.priority]?.bg" [style.color]="priorityColors[task.priority]?.color">
               {{ task.priority }}
             </span>
 

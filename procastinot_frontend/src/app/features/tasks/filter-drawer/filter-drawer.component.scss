@@ -1,6 +1,10 @@
 :host {
   display: block;
+  box-sizing: border-box;
   width: 300px;
+  height: 100%;
+  padding: 24px;
+  overflow-y: auto;
 }
 
 .drawer-header {
@@ -48,10 +52,11 @@
 }
 
 .chip {
+  font-family: Georgia, serif;
   font-size: 0.75rem;
+  font-weight: 600;
   padding: 2px 8px;
   border-radius: 10px;
-  background: #f5f5f5;
 }
 
 .divider {
@@ -77,6 +82,11 @@
   width: 100%;
 }
 
+.title-field {
+  margin-bottom: 8px;
+}
+
 .apply-btn {
   width: 100%;
+  margin-top: 8px;
 }
